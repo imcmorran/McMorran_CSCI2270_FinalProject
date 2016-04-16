@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1460773358 source:/home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/src/GameSystem.cpp
+	"GameSystem.h"
+
+1460773857 /home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/include/GameSystem.h
+	"Level.h"
+	"Character.h"
+
+1460773917 source:/home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/main.cpp
+	<iostream>
+	"GameSystem.h"
+	"Level.h"
+	"Character.h"
+
+1460773518 /home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/include/Level.h
+
+1460773643 source:/home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/src/Character.cpp
+	"Character.h"
+
+1460774109 /home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/include/Character.h
+	<string>
+
+1460773518 source:/home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/src/Level.cpp
+	"Level.h"
+
