@@ -11,3 +11,9 @@ In this project I will be attempting to create a simple ASCII Roguelike game. A 
 
 
 ************ADDITIONAL NOTES************
+
+ERROR CODE LIST
+0	|	No Error
+-1	|	x or y coordinate not set
+101	|	Inventory Full
+102	|	Item not found
