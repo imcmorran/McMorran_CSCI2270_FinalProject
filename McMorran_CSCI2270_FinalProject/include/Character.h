@@ -3,42 +3,63 @@
 
 #include <string>
 
+struct Item
+{
+    Item(std::string t, int i, int j, int k)
+    {
+        type = t;
+        x = i;
+        y = j;
+        key = k;
+    }
+    Item(std::string t, int i, int j)
+    {
+        type = t;
+        x = i;
+        y = j;
+        key = 0;
+    }
+
+    std::string type;
+    int x;
+    int y;
+    int key;
+};
+
 
 class Character
 {
     public:
-        struct Item
-        {
-            std::string type;
-            int key;
-            int damage;
-        };
-
-        Character();
+        Character(std::string name, int x, int y);
         ~Character();
-        int moveUp();              // Will update the character's location
-        int moveDown();            // ''
-        int moveLeft();            // ''
-        int moveRight();           // ''
-        int addItem(Item);         // Adds an item to the inventory array
-        int removeItem(Item);      // Removes an item to the inventory array
-        void changeActiveLeft();    // Moves the pointer to the left
-        void changeActiveRight();   // Moves the pointer to the right
-        void updateHealth(int);     // updates health positively
-        void updateDamage(int);     // updates health negatively
-
+        std::string getName();
+        void moveUp();
+        void moveDown();
+        void moveLeft();
+        void moveRight();
+        void teleport(int x, int y);
+        int getx();
+        int gety();
+        void incHealth(int);
+        void decHealth(int);
+        int getHealth();
+        void addItem(Item);
+        void removeItem(std::string type, int key);
+        void printInventory();
     protected:
-
     private:
-        // Player Specs
-        std::string _name;
-        int _health;
+        std::string name;
         int x;
         int y;
+        int health;
 
-        // Inventory
-        Item * _inventory[10];
-        int _itemsStored;
+        Item **inventory;
+        int isize;
+        Item *activeItem;
+
+        void setName(std::string);
+        void setx(int n);
+        void sety(int n);
 
 };
 

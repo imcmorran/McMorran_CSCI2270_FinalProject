@@ -1,105 +1,153 @@
 #include "Character.h"
-#include <string>
+#include <iostream>
 
-Character::Character()
+using namespace std;
+
+Character::Character(std::string name, int x, int y)
 {
     //ctor
-    x = -1;
-    y = -1;
-    _name = "Player";
-    _health = 100;
-    _itemsStored = 0;
-    for(int i=0; i<10; i++){
-        _inventory[i] = NULL;
+    setName(name);
+    setx(x);
+    sety(y);
+
+    health = 100;
+
+    activeItem = NULL;
+    isize = 10;
+    inventory = new Item*[isize];
+    for(int i=0; i<isize; i++){
+        inventory[i] = NULL;
     }
+
+
 }
 
 Character::~Character()
 {
     //dtor
-    for(int i=0; i<10; i++){
-        if(_inventory[i]){
-            delete _inventory[i];
+}
+
+std::string Character::getName()
+{
+    return name;
+}
+
+void Character::setx(int n)
+{
+    x = n;
+}
+
+void Character::sety(int n)
+{
+    y = n;
+}
+
+void Character::moveUp()
+{
+    y--;
+}
+
+void Character::moveDown()
+{
+    y++;
+}
+
+void Character::moveLeft()
+{
+    x--;
+}
+
+void Character::moveRight()
+{
+    x++;
+}
+
+void Character::teleport(int x, int y)
+{
+    setx(x);
+    sety(y);
+}
+
+int Character::getx()
+{
+    return x;
+}
+
+int Character::gety()
+{
+    return y;
+}
+
+void Character::incHealth(int n)
+{
+    health += n;
+    if(health > 100) health = 100;
+}
+
+void Character::decHealth(int n)
+{
+    health -= n;
+    if(health < 0) health = 0;
+}
+
+int Character::getHealth()
+{
+    return health;
+}
+
+void Character::setName(std::string n)
+{
+    name = n;
+}
+
+void Character::addItem(Item j)
+{
+    Item *newItem = new Item(j.type, j.x, j.y, j.key);
+
+    for(int i=0; i<isize; i++){
+        if(!inventory[i]){
+            inventory[i] = newItem;
+            if(!activeItem){
+                activeItem = newItem;
+            }
+            return;
         }
     }
 }
 
-int Character::moveUp()              // Will update the character's location (Returns Y coordinate for vertical movement, X coordinate for horizontal movement, -1 for error)
+void Character::removeItem(std::string type, int key)
 {
-    if(x<0 || y<0) return -1;
-
-    return --y;
-}
-
-int Character::moveDown()            // ''
-{
-    if(x<0 || y>0) return -1;
-
-    return ++y;
-}
-
-int Character::moveLeft()            // ''
-{
-    if(x<0 || y<0) return -1;
-
-    return --x;
-}
-
-int Character::moveRight()           // ''
-{
-    if(x<0 || y<0) return -1;
-
-    return ++x;
-}
-
-int Character::addItem(Item i)         // Adds an item to the inventory array
-{
-    Item * newItem = new Item;
-    newItem->damage = i.damage;
-    newItem->key    = i.key;
-    newItem->type   = i.type;
-
-    for(int i=0; i<10; i++){
-        if(!_inventory[i]){
-            _inventory[i] = newItem;
-            return 0;
-        }
-    }
-    return 101;                           // ERROR CODE 101: Inventory Full
-}
-
-int Character::removeItem(Item i)      // Removes an item to the inventory array
-{
-    for(int i=0; i<10; i++){
-        if(_inventory[i]){
-        if(_inventory[i]->type == i.type){
-            if(_inventory[i]->key == i.key){
-                delete _inventory[i];
-                _inventory[i] = NULL;
-                return 0;
+    for(int i=0; i<isize; i++){
+        if(inventory[i]->type == type){
+            if(inventory[i]->key == key){
+                Item *tmp = inventory[i];
+                delete tmp;
+                tmp = NULL;
             }
         }
+    }
+}
+
+void Character::printInventory()
+{
+    bool c = 0;
+    cout << "Inventory: |";
+    for(int i=0; i<isize; i++){
+        if(inventory[i]){
+            cout << " ";
+            if(inventory[i] == activeItem){
+                cout << "[";
+            }
+            cout << inventory[i]->type;
+            if(inventory[i] == activeItem){
+                cout << "]";
+            }
+            cout << " |";
+            c = 1;
         }
     }
-    return 102;                         // ERROR CODE 102: iTEM NOT FOUND
-}
-
-void Character::changeActiveLeft()    // Moves the pointer to the left
-{
-
-}
-
-void Character::changeActiveRight()   // Moves the pointer to the right
-{
-
-}
-
-void Character::updateHealth(int)     // updates health positively
-{
-
-}
-
-void Character::updateDamage(int)     // updates health negatively
-{
-
+    if(!c){
+        cout << " empty |";
+    }
+    cout << endl;
 }

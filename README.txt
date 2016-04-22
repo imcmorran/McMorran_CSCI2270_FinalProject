@@ -17,3 +17,4 @@ ERROR CODE LIST
 -1	|	x or y coordinate not set
 101	|	Inventory Full
 102	|	Item not found
+201	|	File not found
