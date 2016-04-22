@@ -35,12 +35,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="include/Character.h" />
-		<Unit filename="include/GameSystem.h" />
-		<Unit filename="include/Level.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Character.cpp" />
-		<Unit filename="src/GameSystem.cpp" />
-		<Unit filename="src/Level.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
