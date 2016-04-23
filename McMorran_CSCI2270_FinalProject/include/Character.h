@@ -44,8 +44,9 @@ class Character
         void decHealth(int);
         int getHealth();
         void addItem(Item);
-        void removeItem(std::string type, int key);
+        void removeItem(std::string type, int key = 0);
         void printInventory();
+        void changeActive(int); // 1 to move right, -1 to move left, all other numbers result in no change
     protected:
     private:
         std::string name;

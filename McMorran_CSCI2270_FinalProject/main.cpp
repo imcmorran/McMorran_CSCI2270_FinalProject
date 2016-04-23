@@ -54,9 +54,50 @@ int main()
     Item item2("Sword", 6, 6);
     Item item3("Pizza", 7, 7);
     player.addItem(newitem);
+    cout << "Adding: (Sword)" << endl;
     player.addItem(item2);
+    cout << "Adding: (Pizza)" << endl;
     player.addItem(item3);
+    cout << "Printing: ";
     player.printInventory();
+    cout << "Removing: (Key, 100)" << endl;
+    player.removeItem("Key", 100);
+    cout << "Printing: ";
+    player.printInventory();
+    cout << "Removing: (Sword)" << endl;
+    player.removeItem("Sword");
+    cout << "Removing: (Pizza, 0)" << endl;
+    player.removeItem("Pizza", 0);
+    cout << "Printing: ";
+    player.printInventory();
+    cout << "Filling Inventory: (Taco, Chicken, Pie, Caserole, Pasta, Beans, Burger, Pizza, Oatmeal, Toast)" << endl;
+    Item item10("Taco", 0, 0);
+    Item item11("Chicken", 0, 0);
+    Item item12("Pie", 0, 0);
+    Item item13("Caserole", 0, 0);
+    Item item14("Pasta", 0, 0);
+    Item item15("Beans", 0, 0);
+    Item item16("Burger", 0, 0);
+    Item item17("Pizza", 0, 0);
+    Item item18("Oatmeal", 0, 0);
+    Item item19("Toast", 0, 0);
+    player.addItem(item10);
+    player.addItem(item11);
+    player.addItem(item12);
+    player.addItem(item13);
+    player.addItem(item14);
+    player.addItem(item15);
+    player.addItem(item16);
+    player.addItem(item17);
+    player.addItem(item18);
+    player.addItem(item19);
+    cout << "Printing: ";
+    player.printInventory();
+    cout << "Moving active:" << endl;
+    for(int i=0; i<11; i++){
+        player.changeActive(1);
+        player.printInventory();
+    }
 
     cout << endl << "***END UNIT TEST OF CHARACTER CLASS***" << endl << endl;
 

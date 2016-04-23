@@ -118,12 +118,24 @@ void Character::addItem(Item j)
 void Character::removeItem(std::string type, int key)
 {
     for(int i=0; i<isize; i++){
+        if(inventory[i]){
         if(inventory[i]->type == type){
             if(inventory[i]->key == key){
                 Item *tmp = inventory[i];
+                if(activeItem == tmp){
+                    activeItem = NULL;
+                    for(int j=0; j<isize-1; j++){
+                        if(inventory[(i+j+1) % isize]){
+                            activeItem = inventory[(i+j+1) % isize];
+                            break;
+                        }
+                    }
+                }
                 delete tmp;
-                tmp = NULL;
+                inventory[i] = NULL;
+                return;
             }
+        }
         }
     }
 }
@@ -150,4 +162,23 @@ void Character::printInventory()
         cout << " empty |";
     }
     cout << endl;
+}
+
+void Character::changeActive(int n)
+{
+    if(n>1 || n<-1) return;
+
+    for(int i=0; i<isize; i++){
+        if(inventory[i] == activeItem){
+            i += n;
+            if(i >= isize) i = 0;
+            if(i < 0) i = isize-1;
+            while(!inventory[i]){
+                i += n;
+                if(i >= isize) i = 0;
+                if(i < 0) i = isize-1;
+            }
+            break;
+        }
+    }
 }
