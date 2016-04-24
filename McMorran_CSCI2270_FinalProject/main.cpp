@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ using namespace std;
 
 // GLOBAL VARIABLES and Function definitions
 void CharacterUnitTest();
-
+string clearScreenString = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
 // DEFINES
 
@@ -28,7 +29,13 @@ int main()
     World game;
     //game.printWorld();    // PRINT OUT COMMENTED OUT FOR GAME - UNCOMMENT FOR UNIT TEST OF WORLD.H
     game.initWorld();
-    game.printStage();
+    char input;
+    cin.clear();
+    while(1){
+        game.printStage();
+        cin >> input;
+        cout << "entered: " << input << endl;
+    }
     return 0;
 }
 
