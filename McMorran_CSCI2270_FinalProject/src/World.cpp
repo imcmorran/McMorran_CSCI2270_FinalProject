@@ -15,16 +15,14 @@ World::World()
         return;
     }
     infile >> numlevels;
-    cout << numlevels << endl;
-
     levels = new Stage*[numlevels];
 
     string levelfile;
     for(int i=1; i<=numlevels; i++){
         infile >> levelfile;
-        cout << "Loading stage #" << i << " " << levelfile << endl;
         loadStage(levelfile, i);
     }
+    currentLevel = levels[0];
 
 }
 
@@ -39,6 +37,37 @@ World::~World()
 void World::analyzeKeystroke(std::string input)
 {
 
+}
+
+void World::printWorld()
+{
+    cout << "***PRINTING WORLD***" << endl;
+    cout << "WORLD STATS" << endl;
+    cout << "current level id: " << currentLevel->id << endl;
+    cout << "number of levels: " << numlevels << endl;
+    cout << endl;
+    for(int i=0; i<numlevels; i++){
+        cout << "LEVEL #" << levels[i]->id << endl;
+        cout << "start x coordinate: " << levels[i]->startx << endl;
+        cout << "start y coordinate: " << levels[i]->starty << endl;
+        cout << "end x coordinate: " << levels[i]->endx << endl;
+        cout << "end y coordinate: " << levels[i]->endy << endl;
+        cout << "number of stage elements: " << levels[i]->numElements << endl;
+        cout << "size of element storage: " << levels[i]->sizeElements << endl;
+        cout << "elements: ";
+        for(int j=0; j<levels[i]->sizeElements; j++){
+            if(j<levels[i]->numElements){
+                cout << levels[i]->elements[j].type << ", ";
+            }
+            else{
+                cout << "empty, ";
+            }
+        }
+        cout << endl;
+        cout << endl;
+    }
+
+    cout << "***END WORLD STATS***" << endl;
 }
 
 /* PRIVATE FUNCTIONS */
@@ -57,12 +86,17 @@ void World::loadStage(std::string filename, int n)
     int gather;
     string sgather;
     infile >> gather;
-    cout << gather << endl;
     while(gather != -99){
         if(gather == -1){       // KEY
+            Element newElement;
             infile >> gather;   // X coordinate
+            newElement.x = gather;
             infile >> gather;   // Y coordinate
+            newElement.y = gather;
             infile >> gather;   // Key
+            newElement.key = gather;
+            newElement.type = "Key";
+            addElement(newElement, newStage);
         }
         else if(gather == -2){  // GENERIC ITEM
             infile >> gather;   // X coordinate
@@ -75,10 +109,44 @@ void World::loadStage(std::string filename, int n)
             infile >> gather;  // Key
         }
         infile >> gather;
-        cout << gather << endl;
     }
     for(int i=0; i<17; i++){
         infile >> newStage->field[i];
-        cout << newStage->field[i] << endl;
+    }
+    levels[n-1] = newStage;
+}
+
+void World::addElement(Element e, Stage *s)
+{
+    if(s->numElements == s->sizeElements){
+        Element *newElements = new Element[s->sizeElements * 2];
+        for(int i=0; i<s->sizeElements; i++){
+            newElements[i] = s->elements[i];
+        }
+        s->sizeElements *= 2;
+        delete s->elements;
+        s->elements = newElements;
+    }
+
+    s->elements[s->numElements].type = e.type;
+    s->elements[s->numElements].x = e.x;
+    s->elements[s->numElements].y = e.y;
+    s->elements[s->numElements].key = e.key;
+    s->numElements++;
+
+}
+
+void World::removeElement(std::string t, int k, Stage *s)
+{
+    for(int i=0; i<s->numElements; i++){
+        if(s->elements[i].type == t){
+            if(s->elements[i].key == k){
+                for(int j=i; j<s->numElements-1; j++){
+                    s->elements[j] = s->elements[j+1];
+                }
+                s->numElements--;
+                return;
+            }
+        }
     }
 }

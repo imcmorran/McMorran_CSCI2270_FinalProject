@@ -26,6 +26,7 @@ int main()
     cout << "Hello World" << endl;
     //CharacterUnitTest();  // UNIT TEST COMMENTED OUT FOR GAME - UNCOMMENT TO TEST CHARACTER.H
     World game;
+    game.printWorld();
     return 0;
 }
 

@@ -52,10 +52,12 @@ class World
         World();
         ~World();
         void analyzeKeystroke(std::string input);
+        void printWorld();
 
     private:
         void loadStage(std::string filename, int n);
-
+        void addElement(Element e, Stage *s);
+        void removeElement(std::string t, int k, Stage *s);
         Stage **levels;
         Stage *currentLevel;
         int numlevels;
