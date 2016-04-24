@@ -12,14 +12,24 @@ using namespace std;
 
 // USER DEFINED INCLUDE SECTION
 #include "Character.h"
+#include "World.h"
 
-// GLOBAL VARIABLES
+// GLOBAL VARIABLES and Function definitions
+void CharacterUnitTest();
 
 
 // DEFINES
 
 
 int main()
+{
+    cout << "Hello World" << endl;
+    //CharacterUnitTest();  // UNIT TEST COMMENTED OUT FOR GAME - UNCOMMENT TO TEST CHARACTER.H
+    World game;
+    return 0;
+}
+
+void CharacterUnitTest()
 {
     cout << "***BEGIN UNIT TEST OF CHARACTER CLASS***" << endl << endl;
 
@@ -98,8 +108,23 @@ int main()
         player.changeActive(1);
         player.printInventory();
     }
+    cout << "Moving back active:" << endl;
+    for(int i=0; i<5; i++){
+        player.changeActive(-1);
+        player.printInventory();
+    }
+    cout << "Final Inventory test:" << endl;
+    player.removeItem("Oatmeal");
+    player.removeItem("Burger");
+    player.removeItem("Beans");
+    player.removeItem("Chicken");
+    player.removeItem("Pasta");
+    player.printInventory();
+    player.removeItem("Pizza");
+    player.printInventory();
+    player.addItem(item18);
+    player.printInventory();
 
     cout << endl << "***END UNIT TEST OF CHARACTER CLASS***" << endl << endl;
-
-    return 0;
+    return;
 }

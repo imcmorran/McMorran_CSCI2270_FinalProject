@@ -25,6 +25,12 @@ Character::Character(std::string name, int x, int y)
 Character::~Character()
 {
     //dtor
+    for(int i=0; i<isize; i++){
+        if(inventory[i]){
+            delete inventory[i];
+        }
+    }
+    delete inventory;
 }
 
 std::string Character::getName()
@@ -178,6 +184,7 @@ void Character::changeActive(int n)
                 if(i >= isize) i = 0;
                 if(i < 0) i = isize-1;
             }
+            activeItem = inventory[i];
             break;
         }
     }
