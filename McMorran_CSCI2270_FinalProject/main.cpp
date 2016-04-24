@@ -26,7 +26,9 @@ int main()
     cout << "Hello World" << endl;
     //CharacterUnitTest();  // UNIT TEST COMMENTED OUT FOR GAME - UNCOMMENT TO TEST CHARACTER.H
     World game;
-    game.printWorld();
+    //game.printWorld();    // PRINT OUT COMMENTED OUT FOR GAME - UNCOMMENT FOR UNIT TEST OF WORLD.H
+    game.initWorld();
+    game.printStage();
     return 0;
 }
 

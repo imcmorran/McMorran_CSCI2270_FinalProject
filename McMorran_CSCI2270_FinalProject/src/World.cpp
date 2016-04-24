@@ -29,6 +29,7 @@ World::World()
 World::~World()
 {
     //dtor
+    delete []levels;
 
 }
 
@@ -68,6 +69,26 @@ void World::printWorld()
     }
 
     cout << "***END WORLD STATS***" << endl;
+}
+
+void World::printStage()
+{
+    for(int i=0; i<17; i++){
+        cout << currentLevel->field[i] << endl;
+    }
+}
+
+void World::initWorld()
+{
+    cout << "Please enter a character name:" << endl;
+    string name;
+    getline(cin, name);
+    int initx = currentLevel->startx;
+    int inity = currentLevel->starty;
+    player = new Character(name, initx, inity);
+    for(int i=0; i<100; i++){
+        cout << endl;
+    }
 }
 
 /* PRIVATE FUNCTIONS */

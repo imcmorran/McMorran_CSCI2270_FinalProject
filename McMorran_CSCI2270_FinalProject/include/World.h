@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 #include <string>
+#include "Character.h"
 
 struct Element
 {
@@ -53,6 +54,8 @@ class World
         ~World();
         void analyzeKeystroke(std::string input);
         void printWorld();
+        void printStage();
+        void initWorld();
 
     private:
         void loadStage(std::string filename, int n);
@@ -61,6 +64,8 @@ class World
         Stage **levels;
         Stage *currentLevel;
         int numlevels;
+
+        Character *player;
 
 };
 
