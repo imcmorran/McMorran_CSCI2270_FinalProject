@@ -19,7 +19,6 @@ using namespace std;
 
 // GLOBAL VARIABLES and Function definitions
 void CharacterUnitTest();
-string clearScreenString = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
 // DEFINES
 
@@ -31,12 +30,13 @@ int main()
     World game;
     //game.printWorld();    // PRINT OUT COMMENTED OUT FOR GAME - UNCOMMENT FOR UNIT TEST OF WORLD.H
     game.initWorld();
-    initscr();
     char input;
     while(1){
         game.printStage();
-        input = getch();
+        cin >> input;
         cout << "entered: " << input << endl;
+        if(input == 'p' || input == 'P'){break;}
+        game.analyzeKeystroke(input);
     }
     return 0;
 }

@@ -52,7 +52,7 @@ class World
     public:
         World();
         ~World();
-        void analyzeKeystroke(std::string input);
+        void analyzeKeystroke(char input);
         void printWorld();
         void printStage();
         void initWorld();

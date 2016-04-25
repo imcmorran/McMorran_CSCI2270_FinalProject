@@ -35,9 +35,35 @@ World::~World()
 
 /* PUBLIC FUNCTIONS */
 
-void World::analyzeKeystroke(std::string input)
+void World::analyzeKeystroke(char input)
 {
-
+    string w = "w";
+    string a = "a";
+    string s = "s";
+    string d = "d";
+    string e = "e";
+    string q = "q";
+    switch(input){
+            case 'w':
+                player->moveUp();
+                break;
+            case 'a':
+                player->moveLeft();
+                break;
+            case 's':
+                player->moveDown();
+                break;
+            case 'd':
+                player->moveRight();
+                break;
+            case 'e':
+                break;
+            case 'q':
+                break;
+            default:
+                cout << "invalid" << endl;
+                break;
+        }
 }
 
 void World::printWorld()
@@ -73,8 +99,26 @@ void World::printWorld()
 
 void World::printStage()
 {
+    for(int i=0; i<100; i++){
+        cout << endl;
+    }
     for(int i=0; i<17; i++){
-        cout << currentLevel->field[i] << endl;
+        if(player->gety() == i){
+            for(int j=0; j<currentLevel->field[i].size(); j++){
+                if(player->getx() == j){
+                    cout << "@";
+                }
+                else{
+                    cout << currentLevel->field[i][j];
+                }
+                if(j == currentLevel->field[i].size()-1){
+                    cout << endl;
+                }
+            }
+        }
+        else{
+            cout << currentLevel->field[i] << endl;
+        }
     }
 }
 
