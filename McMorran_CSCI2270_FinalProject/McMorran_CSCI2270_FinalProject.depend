@@ -6,9 +6,11 @@
 	"Level.h"
 	"Character.h"
 
-1461528640 source:/home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/main.cpp
+1461556496 source:/home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/main.cpp
 	<iostream>
 	<cstdlib>
+	<ncurses.h>
+	<curses.h>
 	"Character.h"
 	"World.h"
 
@@ -32,7 +34,7 @@
 	<iostream>
 	<fstream>
 
-1461474289 /home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/include/World.h
+1461531638 /home/user/Documents/McMorran_CSCI2270_FinalProject/McMorran_CSCI2270_FinalProject/include/World.h
 	<string>
 	"Character.h"
 

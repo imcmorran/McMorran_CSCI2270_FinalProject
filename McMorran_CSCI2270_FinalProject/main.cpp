@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstdlib>
+#include <ncurses.h>
+#include <curses.h>
 
 using namespace std;
 
@@ -29,11 +31,11 @@ int main()
     World game;
     //game.printWorld();    // PRINT OUT COMMENTED OUT FOR GAME - UNCOMMENT FOR UNIT TEST OF WORLD.H
     game.initWorld();
+    initscr();
     char input;
-    cin.clear();
     while(1){
         game.printStage();
-        cin >> input;
+        input = getch();
         cout << "entered: " << input << endl;
     }
     return 0;
