@@ -34,6 +34,7 @@ int main()
     while(1){
         game.printStage();
         cout << game.player->getHealth() << endl;
+        system("\n");
         cin >> input;
         cout << "entered: " << input << endl;
         if(input == 'p' || input == 'P'){break;}

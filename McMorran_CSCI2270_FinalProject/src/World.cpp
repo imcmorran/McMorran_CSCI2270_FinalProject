@@ -160,7 +160,7 @@ void World::initWorld()
     }
 }
 
-void World::checkConditions()
+int World::checkConditions()
 {
     if(player->getHealth() == 0){   // CONDITION: DEATH
         return 1;
