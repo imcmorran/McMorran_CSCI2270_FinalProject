@@ -43,18 +43,43 @@ void World::analyzeKeystroke(char input)
     string d = "d";
     string e = "e";
     string q = "q";
+    bool good = 0;
     switch(input){
             case 'w':
-                player->moveUp();
+                good = checkSpace(player->getx(), player->gety()-1);
+                if(good){
+                    player->moveUp();
+                }
+                else{
+                    reportCollision(currentLevel->field[player->gety()-1][player->getx()]);
+                }
                 break;
             case 'a':
-                player->moveLeft();
+                good = checkSpace(player->getx()-1, player->gety());
+                if(good){
+                    player->moveLeft();
+                }
+                else{
+                    reportCollision(currentLevel->field[player->gety()][player->getx()-1]);
+                }
                 break;
             case 's':
-                player->moveDown();
+                good = checkSpace(player->getx(), player->gety()+1);
+                if(good){
+                    player->moveDown();
+                }
+                else{
+                    reportCollision(currentLevel->field[player->gety()+1][player->getx()]);
+                }
                 break;
             case 'd':
-                player->moveRight();
+                good = checkSpace(player->getx()+1, player->gety());
+                if(good){
+                    player->moveRight();
+                }
+                else{
+                    reportCollision(currentLevel->field[player->gety()][player->getx()+1]);
+                }
                 break;
             case 'e':
                 break;
@@ -132,6 +157,13 @@ void World::initWorld()
     player = new Character(name, initx, inity);
     for(int i=0; i<100; i++){
         cout << endl;
+    }
+}
+
+void World::checkConditions()
+{
+    if(player->getHealth() == 0){   // CONDITION: DEATH
+        return 1;
     }
 }
 
@@ -214,4 +246,40 @@ void World::removeElement(std::string t, int k, Stage *s)
             }
         }
     }
+}
+
+bool World::checkSpace(int x, int y)
+{
+    if(currentLevel->field[y][x] == '#'){
+        return 0;
+    }
+    if(currentLevel->field[y][x] == '8'){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+}
+
+void World::reportCollision(char symbol)
+{
+    if(symbol == '#'){
+        player->decHealth(10);
+    }
+    if(symbol == '8'){
+        player->decHealth(100);
+    }
+    if(symbol == 'm'){
+        player->decHealth(50);
+    }
+    if(symbol == 'M'){
+        player->decHealth(100);
+    }
+    if(symbol == '%'){
+
+    }
+    if(symbol == 'i'){
+
+    }
+
 }

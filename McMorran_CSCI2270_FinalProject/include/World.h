@@ -56,16 +56,18 @@ class World
         void printWorld();
         void printStage();
         void initWorld();
-
+        int checkConditions();
+        Character *player;
     private:
         void loadStage(std::string filename, int n);
         void addElement(Element e, Stage *s);
         void removeElement(std::string t, int k, Stage *s);
+        bool checkSpace(int x, int y);
+        void reportCollision(char);
         Stage **levels;
         Stage *currentLevel;
         int numlevels;
 
-        Character *player;
 
 };
 
