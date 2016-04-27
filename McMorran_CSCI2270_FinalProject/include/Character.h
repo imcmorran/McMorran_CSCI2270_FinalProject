@@ -43,10 +43,12 @@ class Character
         void incHealth(int);
         void decHealth(int);
         int getHealth();
-        void addItem(Item);
+        void addItem(int, int, std::string, int);
         void removeItem(std::string type, int key = 0);
         void printInventory();
         void changeActive(int); // 1 to move right, -1 to move left, all other numbers result in no change
+        void useItem();
+        Item *activeItem;
     protected:
     private:
         std::string name;
@@ -56,7 +58,7 @@ class Character
 
         Item **inventory;
         int isize;
-        Item *activeItem;
+
 
         void setName(std::string);
         void setx(int n);

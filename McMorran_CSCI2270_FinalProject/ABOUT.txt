@@ -17,16 +17,16 @@ __________________________________________
 -The symbols and meanings (with attributes) are as follows:
 		#		|	Wall - fixed, has mass, minor damage (10%)
 		.		|	Air - fixed, empty space
-		@		|	PC - moveable, has mass
+		&		|	PC - moveable, has mass
 		M		|	Monster - fixed, has mass, combat upon adjacency, weapon required, lethal (100%)
 		m		|	Little Monster - fixed, has mass, combat upon adjacency, hand combat, medium damage (50%)
 		8		|	Hole - fixed, empty space, death upon contact
 		%		|	Key - fixed, has mass, retrieval upon contact
 		i		|	Item - fixed, has mass, retrieval upon contact, contents unknown until retrieval
-	  | OR _	|	Door - fixed, has mass, locked
+	     | OR _		|	Door - fixed, has mass, locked
 		X		|	Objective - fixed, has mass, retrieval upon contact
 		B		|	*Back* - if you wish to return to a previous stage, contact this to teleport back
-						Inventory will not be affected, map will be reset.
+						Inventory will not be affected, map will be reset. (**NOT IMPLEMENTED)
 		
 *NOTE: PC stands for "Playable Character". This is the symbol you will interact with the most.
 *NOTE: A locked door (| or _) will change to an unlocked door (. - empty air) if a key (%) is active in the inventory
@@ -35,12 +35,12 @@ __________________________________________
 	
 	########			########
 	#......#			#......#
-	#..@%..#	--->	#...@..#
+	#..@%..#		--->	#...@..#
 	#......#			#......#
 	########			########
-	adjancy  moves into  contact
+		adjancy  moves into  contact
 
-1.2 INVENTORY
+1.2 INVENTORY (**OUTDATED)
 -The inventory is displayed at the bottom of the screen below the map.
 	It will look like the following:
 	
@@ -55,7 +55,14 @@ __________________________________________
 	 _______________________________________________
 	| sword | lantern | key | empty | empty | empty |
 	 ------------^----------------------------------
-	 
+
+1.2.2 *NEW* INVENTORY
+-The inventory will function the same as previously described, but has a different look. It will be printed as the following:
+	Inventory: | item | item | [active item] | item |
+ or
+	Inventory: | empty |
+ if it is empty.
+ 
 1.3 OBJECTIVES AND GAMEPLAY
 -The main objective of this game is to successfully complete the dungeon crawl by reaching the main objective (X).
 	This is reached by traversing through each level until you reach the end without dying.
@@ -71,7 +78,7 @@ ____________________________
 SECTION 2: LEVEL INFORMATION
 ____________________________
 
-2.1 LEVEL 1
+2.1.1 LEVEL 1
 
 ###################################################
 #..%##888888888888888888................8888888888#
@@ -91,7 +98,7 @@ ____________________________
 #.................................................#
 ###################################################
 
-2.2 LEVEL 2
+2.1.2 LEVEL 2
 
 ###################################################
 #888888888............8888888888888888888888888888#
@@ -111,7 +118,7 @@ ____________________________
 #8888888#.........i.#88888888888888888888888888888#
 ###################################################
 
-2.3 LEVEL 3
+2.1.3 LEVEL 3
 
 ###################################################
 #.................................................#
@@ -121,6 +128,104 @@ ____________________________
 #.................................................#
 #.................................................#
 #......................@..........................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+###################################################
+
+2.2 LEVEL FILES - MAKING YOUR OWN
+-There are two important types of files that define the world of the game:
+	world.txt
+	...and all the individual level files, name stage#.txt (where # is the number of the level, or level id)
+
+2.2.2 WORLD.TXT
+-World.txt is important for organizing each level into a cohesive world. There is a simple structure to the file:
+
+	(number of levels)
+	stage#.txt
+	stage#.txt
+	stage#.txt
+	...
+
+With just three levels, the file would be the following:
+
+	3
+	stage1.txt
+	stage2.txt
+	stage3.txt
+
+-It is important that the stages are in ascending order and that the number of stages referenced is the same as the number on the first line. To add a new stage, create a new stage#.txt file, append it to the end (or change the order, though this may affect continuity of the world as your inventory carries over from level to level), and increase the number by 1.
+
+2.2.3 STAGE#.TXT
+-These files contain the important info that allows the program to create a level with all its components. There is a strict format that must be followed for this to work. The format is as follows:
+
+	startx starty
+	endx endy
+	itemType itemx itemy attribute
+	...
+	-99
+	a 17(y-axis) by 51(x-axis) grid that is the playing field
+
+This format is confusing at first, but actually pretty straight forward.
+The startx and starty numbers indicate where on the map the character will start.
+*IMPORTANT*: THE GRID IS INDEXED BY ROW AND COLUMN STARTING AT 0 INCREASING OUTWARD FROM THE ORIGIN (0,0) WHICH IS THE TOP LEFT CORNER. FOR EXAMPLE, THE X IS AT 2,3 IN THE FOLLOWING GRID:
+	00000
+	00000
+	00000
+	00X00
+	00000
+Naturally, the endx and endy numbers indicate the location of the X on the map. Include these numbers as well as the X in the field.
+Up next is a list of all the items required for the level. Each new line represents an item on the field. The first number on an item line indicates the type of item which determines its format. The 3 types of items and their formats are listed below:
+	-1 = Key	Format: -1 x y key (key is a code that will match with the key of a door)
+	-2 = Generic	Format: -2 x y "Type" (type can be Sword, Health, or something funny but useless)
+	-3 = Door	Format: -3 x y key (must have a Key with a key that matches in order to be opened)
+
+*IMPORTANT* YOU MUST MAKE SURE ALL THE ITEM LOCATIONS, KEYS, AND TYPES ARE CORRECTLY LISTED OR THE LEVEL WILL NOT FUNCTION. THE LOCATIONS MUST MATCH THE ACTUAL LOCATION OF YOUR SYMBOL ON THE MAP. BOTH THE ITEM IN THE LIST MUST BE RECORDER AND THE SYMBOL IN THE MAP INCLUDED.
+
+Once you are done listing items, the following line should be -99. This indicates the end of metadata and the start of the map. Here is an example map. Notice how it includes symbols but not a character:
+###################################################
+#..%##888888888888888888................8888888888#
+#...##8888888888888888888................888888888#
+#...##8888888888888...........i..........888888888#
+##_###8888888888.........................888888888#
+#...##888888888..............8888...........888888#
+#...##888...........888888888888888.............88#
+#...##88............888888888888888888............#
+#...##88...............888888888888888888.........#
+#...##...........#.......88888888888888...........#
+#...##...........#.........888888888..............#
+#................#........8888888888..............#
+##################.....8888888888888..............#
+#.................88888888888888888888............#
+#...X..............88888888888888888..............#
+#.................................................#
+###################################################
+It also has a solid border around the field, this ensures that a player cannot leave the playable area.
+
+The metadata for this map is the following:
+2 3 
+4 14
+-1 3 1 1
+-2 30 3 Sword
+-3 2 4 1
+-99
+
+You should recognize this as the information for level 1.
+Level id's do not need to be assigned as they will be assigned as they are read in by the program.
+Here is a blank map for you to get started if you'd like to create a level:
+###################################################
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
+#.................................................#
 #.................................................#
 #.................................................#
 #.................................................#

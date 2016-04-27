@@ -19,28 +19,82 @@ using namespace std;
 
 // GLOBAL VARIABLES and Function definitions
 void CharacterUnitTest();
+int playGame();
+void printMenu();
+void clearScreen();
 
 // DEFINES
 
 
 int main()
 {
-    cout << "Hello World" << endl;
-    //CharacterUnitTest();  // UNIT TEST COMMENTED OUT FOR GAME - UNCOMMENT TO TEST CHARACTER.H
+    char in;
+    while(1){
+        printMenu();
+        cin >> in;
+        if(in == '1'){
+            cin.get();
+            playGame();
+            cin.get();
+        }
+        else if(in == '2'){
+            cout << "Please view the README for game instructions and more" << endl;
+        }
+        else if(in == '3'){
+            cout << "Goodbye!" << endl;
+            break;
+        }
+        else{
+            cout << "DID NOT RECOGNIZE COMMAND... TRY AGAIN" << endl << endl;
+        }
+    }
+
+
+    return 0;
+}
+
+void printMenu()
+{
+    cout << "------------------------------------" << endl;
+    cout << "-             WELCOME!             -" << endl;
+    cout << "- Select an option below:          -" << endl;
+    cout << "-  1. Play Game!                   -" << endl;
+    cout << "-  2. Rules                        -" << endl;
+    cout << "-  3. Quit                         -" << endl;
+    cout << "------------------------------------" << endl;
+}
+
+int playGame()
+{
+    cin.clear();
     World game;
-    //game.printWorld();    // PRINT OUT COMMENTED OUT FOR GAME - UNCOMMENT FOR UNIT TEST OF WORLD.H
     game.initWorld();
+    int res;
     char input;
     while(1){
         game.printStage();
-        cout << game.player->getHealth() << endl;
-        system("\n");
+        game.printHUD();
         cin >> input;
-        cout << "entered: " << input << endl;
-        if(input == 'p' || input == 'P'){break;}
         game.analyzeKeystroke(input);
+        res = game.checkConditions();
+        if(res == -1){
+            clearScreen();
+            cout << "YOU DIED... TRY AGAIN!" << endl << endl;
+            cout << "press any character to continue...";
+            cin.get(input);
+            return res;
+        }
+        if(res == 1){
+            return res;
+        }
     }
-    return 0;
+}
+
+void clearScreen()
+{
+    for(int i=0; i<100; i++){
+        cout << endl;
+    }
 }
 
 void CharacterUnitTest()
@@ -77,7 +131,7 @@ void CharacterUnitTest()
     Item newitem("Key", 5, 5, 100);
     Item item2("Sword", 6, 6);
     Item item3("Pizza", 7, 7);
-    player.addItem(newitem);
+    /*player.addItem(newitem);
     cout << "Adding: (Sword)" << endl;
     player.addItem(item2);
     cout << "Adding: (Pizza)" << endl;
@@ -114,7 +168,7 @@ void CharacterUnitTest()
     player.addItem(item16);
     player.addItem(item17);
     player.addItem(item18);
-    player.addItem(item19);
+    player.addItem(item19);*/
     cout << "Printing: ";
     player.printInventory();
     cout << "Moving active:" << endl;
@@ -136,7 +190,7 @@ void CharacterUnitTest()
     player.printInventory();
     player.removeItem("Pizza");
     player.printInventory();
-    player.addItem(item18);
+    //player.addItem(item18);
     player.printInventory();
 
     cout << endl << "***END UNIT TEST OF CHARACTER CLASS***" << endl << endl;

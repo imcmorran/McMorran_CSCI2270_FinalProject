@@ -8,6 +8,7 @@ using namespace std;
 World::World()
 {
     //ctor
+    masterwin = 0;
     ifstream infile;
     infile.open("world.txt");
     if(!infile.good()){
@@ -82,13 +83,20 @@ void World::analyzeKeystroke(char input)
                 }
                 break;
             case 'e':
+                player->changeActive(1);
                 break;
             case 'q':
+                player->changeActive(-1);
                 break;
+            case 'f':
+                cout << "space" << endl;
+                player->useItem();
             default:
                 cout << "invalid" << endl;
                 break;
         }
+        checkContact(player->getx(), player->gety());
+        checkAdjancent(player->getx(), player->gety());
 }
 
 void World::printWorld()
@@ -131,7 +139,7 @@ void World::printStage()
         if(player->gety() == i){
             for(int j=0; j<currentLevel->field[i].size(); j++){
                 if(player->getx() == j){
-                    cout << "@";
+                    cout << "&";
                 }
                 else{
                     cout << currentLevel->field[i][j];
@@ -145,6 +153,12 @@ void World::printStage()
             cout << currentLevel->field[i] << endl;
         }
     }
+}
+
+void World::printHUD()
+{
+    cout << "Player: " << player->getName() << "     Health: " << player->getHealth() << "     Level: " << currentLevel->id << endl;
+    player->printInventory();
 }
 
 void World::initWorld()
@@ -163,8 +177,20 @@ void World::initWorld()
 int World::checkConditions()
 {
     if(player->getHealth() == 0){   // CONDITION: DEATH
-        return 1;
+        return -1;
     }
+    if(player->getx() == currentLevel->endx && player->gety() == currentLevel->endy){
+        if(currentLevel->id == numlevels){
+            cout << "THE END!" << endl;
+            cout << "YOU'VE MADE IT TO THE END! CONGRATULATIONS!" << endl;
+            return 1;
+        }
+        else{
+            changeLevel();
+            return 0;
+        }
+    }
+
 }
 
 /* PRIVATE FUNCTIONS */
@@ -196,14 +222,26 @@ void World::loadStage(std::string filename, int n)
             addElement(newElement, newStage);
         }
         else if(gather == -2){  // GENERIC ITEM
+            Element newElement;
             infile >> gather;   // X coordinate
+            newElement.x = gather;
             infile >> gather;   // Y coordinate
+            newElement.y = gather;
             infile >> sgather;  // Type
+            newElement.type = sgather;
+            newElement.key = 0;
+            addElement(newElement, newStage);
         }
         else if(gather == -3){  // DOOR
+            Element newElement;
             infile >> gather;   // X coordinate
+            newElement.x = gather;
             infile >> gather;   // Y coordinate
+            newElement.y = gather;
             infile >> gather;  // Key
+            newElement.key = gather;
+            newElement.type = "Door";
+            addElement(newElement, newStage);
         }
         infile >> gather;
     }
@@ -256,8 +294,56 @@ bool World::checkSpace(int x, int y)
     if(currentLevel->field[y][x] == '8'){
         return 0;
     }
+    if(currentLevel->field[y][x] == '|' || currentLevel->field[y][x] == '_'){
+        return 0;
+    }
     else{
         return 1;
+    }
+}
+
+void World::checkContact(int x, int y)
+{
+    if(currentLevel->field[y][x] == '%'){
+        reportCollision('%');
+    }
+    if(currentLevel->field[y][x] == 'i'){
+        reportCollision('i');
+    }
+    if(currentLevel->field[y][x] == 'm'){
+        reportCollision('m');
+        currentLevel->field[y][x] = '.';
+    }
+    if(currentLevel->field[y][x] == 'M'){
+        reportCollision('M');
+        currentLevel->field[y][x] = '.';
+    }
+}
+
+void World::checkAdjancent(int x, int y)
+{
+    for(int i=0; i<=2; i++){
+        for(int j=0; j<=2; j++){
+            if(currentLevel->field[y+1-j][x+1-i] == '|' || currentLevel->field[y+1-j][x+1-i] == '_'){
+                if(player->activeItem){
+                if(player->activeItem->type == "Key"){
+                    for(int r=0; r<currentLevel->numElements; r++){
+                        if(currentLevel->elements[r].x == x+1-i){
+                            if(currentLevel->elements[r].y == y+1-j){
+                                if(currentLevel->elements[r].key == player->activeItem->key){
+                                    player->removeItem("Key", currentLevel->elements[r].key);
+                                    currentLevel->field[y+1-j][x+1-i] = '.';
+                                    currentLevel->elements[r].x = -1;
+                                    currentLevel->elements[r].y = -1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                }
+            }
+        }
     }
 }
 
@@ -270,16 +356,68 @@ void World::reportCollision(char symbol)
         player->decHealth(100);
     }
     if(symbol == 'm'){
-        player->decHealth(50);
+        if(player->activeItem){
+            if(player->activeItem->type == "Sword"){
+                player->decHealth(30);
+                return;
+            }
+        }
+        player->decHealth(60);
     }
     if(symbol == 'M'){
+        if(player->activeItem){
+            if(player->activeItem->type == "Sword"){
+                player->decHealth(50);
+                return;
+            }
+        }
         player->decHealth(100);
     }
     if(symbol == '%'){
-
+        int x = player->getx();
+        int y = player->gety();
+        for(int i=0; i<currentLevel->sizeElements; i++){
+            if(currentLevel->elements[i].x == x){
+                if(currentLevel->elements[i].y == y){
+                    player->addItem(x, y, currentLevel->elements[i].type, currentLevel->elements[i].key);
+                    currentLevel->field[y][x] = '.';
+                    currentLevel->elements[i].x = -1;
+                    currentLevel->elements[i].y = -1;
+                    break;
+                }
+            }
+        }
     }
     if(symbol == 'i'){
+        int x = player->getx();
+        int y = player->gety();
+        for(int i=0; i<currentLevel->sizeElements; i++){
+            if(currentLevel->elements[i].x == x){
+                if(currentLevel->elements[i].y == y){
+                    player->addItem(x, y, currentLevel->elements[i].type, currentLevel->elements[i].key);
+                    currentLevel->field[y][x] = '.';
+                    currentLevel->elements[i].x = -1;
+                    currentLevel->elements[i].y = -1;
+                    break;
+                }
+            }
+        }
+    }
+    if(symbol == '|' || symbol == '_'){
 
     }
+}
 
+void World::changeLevel()
+{
+    for(int i=0; i<100; i++){
+        cout << endl;
+    }
+    cout << "*******CONGRATULATIONS!*******" << endl;
+    cout << " Level " << currentLevel->id << " complete." << endl;
+    cout << endl;
+        cout << "Press any key to continue..." << endl;
+        string i;
+        cin >> i;
+        currentLevel = levels[currentLevel->id];
 }

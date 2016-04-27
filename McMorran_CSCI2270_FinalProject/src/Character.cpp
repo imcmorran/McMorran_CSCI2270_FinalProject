@@ -106,9 +106,9 @@ void Character::setName(std::string n)
     name = n;
 }
 
-void Character::addItem(Item j)
+void Character::addItem(int x, int y, std::string t, int k)
 {
-    Item *newItem = new Item(j.type, j.x, j.y, j.key);
+    Item *newItem = new Item(t, x, y, k);
 
     for(int i=0; i<isize; i++){
         if(!inventory[i]){
@@ -173,7 +173,7 @@ void Character::printInventory()
 void Character::changeActive(int n)
 {
     if(n>1 || n<-1) return;
-
+    if(!inventory[0]) return;
     for(int i=0; i<isize; i++){
         if(inventory[i] == activeItem){
             i += n;
@@ -186,6 +186,16 @@ void Character::changeActive(int n)
             }
             activeItem = inventory[i];
             break;
+        }
+    }
+}
+
+void Character::useItem()
+{
+    if(activeItem){
+        if(activeItem->type == "Health"){
+            removeItem("Health");
+            health += 50;
         }
     }
 }

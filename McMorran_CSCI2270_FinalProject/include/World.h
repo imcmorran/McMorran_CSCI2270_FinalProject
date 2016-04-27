@@ -55,15 +55,20 @@ class World
         void analyzeKeystroke(char input);
         void printWorld();
         void printStage();
+        void printHUD();
         void initWorld();
         int checkConditions();
         Character *player;
+        bool masterwin;
     private:
         void loadStage(std::string filename, int n);
         void addElement(Element e, Stage *s);
         void removeElement(std::string t, int k, Stage *s);
         bool checkSpace(int x, int y);
+        void checkContact(int x, int y);
+        void checkAdjancent(int x, int y);
         void reportCollision(char);
+        void changeLevel();
         Stage **levels;
         Stage *currentLevel;
         int numlevels;
