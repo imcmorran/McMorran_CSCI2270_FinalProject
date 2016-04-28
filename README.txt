@@ -6,6 +6,10 @@ Partners: NONE
 *IMPORTANT*
 if you contribute to the code, readme, or other related files, please add your name to the contibuters list in the "Additional Notes" section. Also be sure to read the entire README as all the information is important. If you wish to add levels, look in the ABOUT.txt file for info on how those files work. Thanks!
 
+::AFTER SUBMISSION EDIT::
+In my game rules section I forgot to mention how to use items such as "Health". With it as the active item, in the inventory, press "f" to use it.
+
+
 ***********************************
 ************DESCRIPTION************
 ***********************************
