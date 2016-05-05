@@ -1,7 +1,5 @@
 #include <iostream>
 #include <cstdlib>
-#include <ncurses.h>
-#include <curses.h>
 
 using namespace std;
 
